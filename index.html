@@ -1,0 +1,59 @@
+<html>
+
+    <head>
+        <title>HOME</title>
+        <link rel="stylesheet" href="resources/css/main.css">
+        <script src="resources/js/jquery-3.0.0.min.js"></script>
+        <script src="resources/json/hospitals.json"></script>
+        <script src="resources/json/experiment_paper.json"></script>
+    </head>
+
+    <body>
+        <div id="div-home">
+            <button id='btn_start' onclick="onStart()">let's start</button>    
+        </div>
+
+    
+        <script>
+            localStorage.clear();
+            $('#btn_start').hide();
+            function onStart(){
+                window.open('map.html','_self');
+            }
+            
+            function setup(){
+                if(localStorage.getItem("hospital_list")==null){
+                    var hospital = hospital_data;
+                    localStorage.setItem("hospital_list",JSON.stringify(hospital));
+                    console.log("saved hospital_data");
+                }else{
+                    var hospital = hospital_data;
+                    var saved_hospital = JSON.parse(localStorage.getItem("hospital_list"));
+                    var blChange = false;
+                    for(var i=0; i<saved_hospital.length; i++){
+                        if(saved_hospital[i].name!=hospital[i].name||
+                           saved_hospital[i].location.lat!=hospital[i].location.lat||
+                           saved_hospital[i].location.long!=hospital[i].location.long||
+                           saved_hospital[i].contact!=hospital[i].contact
+                          ){
+                            blChange = true;
+                            break;
+                           }
+                    }
+                    if(blChange){
+                        localStorage.setItem("hospital_list",JSON.stringify(hospital));
+                    }
+                }
+                if(localStorage.getItem("experiment_paper")==null){
+                    var experiment_paper = experiment_paper_structure;
+                    localStorage.setItem("experiment_paper",JSON.stringify(experiment_paper));
+                    console.log("saved hospital_data");
+                }
+                $('#btn_start').show();
+            }                                                            
+            setup();
+            
+        </script>        
+    </body>
+
+</html>
